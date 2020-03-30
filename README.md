@@ -22,10 +22,10 @@ If you don't have an existing Hugo website, you can use the provided `exampleSit
 
 ```shell
 ~ % cd sites
-sites % git clone https://github.com/jhauraw/axiom.git axiom
-# Copy the exampleSite to a new Hugo project
-sites % cp -r axiom/exampleSite example.com
+sites % git clone https://github.com/jhauraw/axiom.git example.com/themes/axiom
 sites % cd example.com
+# Copy the exampleSite contents to site root
+example.com % cp -r themes/axiom/exampleSite/* .
 ```
 
 Proceed to "Installation" next.
@@ -181,14 +181,15 @@ Settings relating to social networks:
 
 ```toml
 [params.social]
-facebook = "https://www.facebook.com/user_or_page"
-github = "https://github.com/user"
-instagram = "https://instagram.com/user"
-linkedin = "https://www.linkedin.com/in/user"
-pinterest = "https://www.pinterest.com/user"
-stackoverflow = "https://stackoverflow.com/users/user"
-twitter = "https://twitter.com/user"
-youtube = "https://www.youtube.com/user"
+# Replace USERNAME with your own
+facebook = "https://www.facebook.com/USERNAME"
+github = "https://github.com/USERNAME"
+instagram = "https://instagram.com/USERNAME"
+linkedin = "https://www.linkedin.com/in/USERNAME"
+pinterest = "https://www.pinterest.com/USERNAME"
+stackoverflow = "https://stackoverflow.com/users/USERNAME"
+twitter = "https://twitter.com/USERNAME"
+youtube = "https://www.youtube.com/USERNAME"
 
 # Show these linked icons in the footer
 footer = ["twitter", "github", "instagram"]
@@ -432,7 +433,7 @@ SEO potential, write something relevant.
 
 __Figure__: Axiom comes with a custom Figure image shortcode which uses the same API as the built in Hugo shortcode, but has been enhanced to support CDN images and transformations. You only need to pass it the image name (e.g., `path/filename.ext`, `public_id` [uuid]) with or without extension and Axiom will do the rest - no need to copy/paste complicated URLs in your Markdown files.
 
-```markeup
+```markup
 {{< figure src="image/data-chart.webp" alt="Data Chart" caption="Data Chart" attr="Big Data" attrlink="https://www.example.com/" >}}
 ```
 
