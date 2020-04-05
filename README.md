@@ -584,13 +584,13 @@ Setting the `adsenseLazy` to true will delay the loading of the javascript sligh
 
 __Facebook__: If you set a Facebook Pixel Id in the _Services_ Config (`params.services` `facebookPixel`), the lightweight pixel tracker will be activated, otherwise all related javascript and code will not be output.
 
-## Customization
+## Extending
 
-__CSS / JS__: Axiom is setup so you can use your own custom CSS and JS files. To take advantage of this feature, create the files in the _Assets_ directory (`/assets/`) and Axiom will do the rest, including preloading them for better performance. Name each file `custom.css` and `custom.js`.
+__Custom CSS / JS__: Axiom is setup so you can add your own custom CSS and JS code to extend the theme base css / js files. To take advantage of this feature, add a file named `custom.css` and/or `custom.js` to the  _Assets_ directory (`/assets/`). Axiom will bundle the custom files with the base theme files, minify the custom code, and preload the bundles to enhance performance.
 
 The Example site Assets directory contains a pair of empty custom CSS and JS files to get you started.
 
-If you're not using the Custom CSS and JS features, you can delete the corresponding files (`/assets/custom.css` and `/assets/custom.js`) to prevent Hugo from copying empty files on build.
+If you're not using the Custom CSS and JS features, you can delete the corresponding files (`/assets/custom.css` and `/assets/custom.js`).
 
 # Misc.
 

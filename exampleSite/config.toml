@@ -39,16 +39,16 @@ youtube = "https://www.youtube.com/user"
 footer = ["twitter", "github", "instagram"]
 
 [params.services]
-analyticsId = "UA-DEV"
-adwordsId = "AW-DEV"
-adsenseId = "CA-PUB-DEV"
-adsenseAdSlotId = "ID-DEV"
+analyticsId = ""
+adwordsId = ""
+adsenseId = ""
+adsenseAdSlotId = ""
 adsenseLazy = false
-adwordsConversionId = "ID-DEV"
+adwordsConversionId = ""
 adwordsConversionValue = 0
-facebookApp = "FB-DEV"
-facebookPixel = "FB-DEV"
-disqusUser = "na"
+facebookApp = ""
+facebookPixel = ""
+disqusUser = ""
 
 [params.logo]
 inline = true

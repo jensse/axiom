@@ -1,11 +1,5 @@
-{{- with resources.Get "app.js" }}
-<link rel="preload" as="script" href="{{ printf "%s?v=%d" .RelPermalink now.Unix | safeHTML }}">
-{{- end }}
-
-{{- with resources.Get "custom.js" }}
-<link rel="preload" as="script" href="{{ printf "%s?v=%d" .RelPermalink now.Unix | safeHTML }}">
-{{- end }}
-
+{{- $bundleJS := printf "%s?v=%d" "bundle.js" now.Unix }}
+<link rel="preload" as="script" href="{{ $bundleJS | relURL | safeHTML }}">
 <link rel="preconnect" href="https://www.google-analytics.com">
 <link rel="preconnect" href="https://stats.g.doubleclick.net">
 <link rel="preconnect" href="https://www.googleadservices.com">
