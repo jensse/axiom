@@ -1,20 +1,8 @@
 +++
-author = "Hugo Authors"
 title = "Markdown Syntax Guide"
 date = "2019-03-11"
+author = "Hugo Authors"
 description = "Sample article showcasing basic Markdown syntax and formatting for HTML elements."
-tags = [
-    "markdown",
-    "css",
-    "html",
-    "themes",
-]
-categories = [
-    "themes",
-    "syntax",
-]
-series = ["Themes Guide"]
-aliases = ["migrate-from-jekyl"]
 feature = "image/page-default.webp"
 +++
 
@@ -103,6 +91,7 @@ Tables aren't part of the core Markdown spec, but Hugo supports supports them ou
     </html>
 
 #### Code block with Hugo's internal highlight shortcode
+
 {{< highlight html >}}
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <!DOCTYPE html>

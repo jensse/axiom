@@ -1,4 +1,11 @@
 /* theme */
+/* logo defaults */
+.logo {
+  & img,
+  & svg {
+    @apply h-9 w-auto;
+  }
+}
 
 /* <hr> */
 .hr-fade {

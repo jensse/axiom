@@ -146,6 +146,24 @@ post = "/:filename"
 
 The `post` variable name refers to individual files in the `post` content Section.
 
+## Paths
+
+When entering paths in the Config file or in Content files, the most portable and robust option is to use a __relative__ path:
+
+- Don't use a beginning forward slash: NO:`/images/example.png`, YES:`images/example.png`
+- Local file paths are relative to the `publishDir` Config option (default: `public`)
+- CDN file paths are relative to the `params.cdn` constructed URL
+- Local file URLs will be output as absolute or root-relative based on the `canonifyURLs` Config setting
+- CDN file URLs are always absolute
+
+Examples of where relative paths are recommended:
+
+- In the `params.logo` Config section
+- In the `params.images` Config section
+- In a Page or Post's Frontmatter when setting the Feature image
+- In a Page or Post's Content when linking to a PDF, or using the Figure shortcode to display an image
+- Anywhere else an asset path is entered, excepting links to other websites' assets
+
 ## Params
 
 Options related to Hugo's Param settings:
@@ -265,15 +283,47 @@ See the _Typography_ section below for more details.
 
 ## Images
 
-Image config options set defaults used in meta tags and fallbacks:
+> Keep in mind the __Paths__ documentation above when working with paths.
+
+__Logo__: The logo in the website's Header can be shown as 1) styled text, 2) an image, or 3) an inline svg.
+
+1) TEXT: Show the website's Title (`.Site.Title` param) in styled text instead of a logo:
+
+```toml
+[params.logo]
+inline = false
+path = ""
+```
+
+2) IMAGE: Display the logo as an image (`<img>`):
+
+```toml
+[params.logo]
+inline = false
+path = "image/brand/logo.png"
+```
+
+> Note: any file type (extension) may be used, i.e., .jpg, .gif, .svg, etc.
+
+3) INLINE SVG: Display the logo as an inline svg (`<svg>`):
+
+> Note: Axiom uses Hugo's `readFile` function to get the contents of the SVG as a string. To make this work, enter a project `root-relative` path, typically to the `/static/` or `/assets/` directory. A CDN URL cannot be used with `readFile`.
+
+```toml
+[params.logo]
+inline = true
+path = "/static/image/brand/logo.svg"
+```
+
+Advantages with this option include the ability to manipulate the SVG with styles, such as changing the color or adding a hover effect. Also, it reduces http requests by one.
+
+General image config options:
 
 ```toml
 [params.image]
 # Dimensions of the 'Feature' image (pixels)
 width = "2048"
 height = "1024"
-# Default 'Feature' image
-default = "image/page-default.webp"
 # Favicons (suggest to store .ico at root of website or CDN)
 faviconIco = "favicon.ico"
 faviconAlt = "image/brand/favicon.png"
@@ -281,21 +331,13 @@ faviconAlt = "image/brand/favicon.png"
 icon1To1 = "image/brand/icon-1-1.png"
 # High-res rectangular version of your Icon or Logo (recommended 2048x1024 px)
 icon2To1 = "image/brand/icon-2-1.png"
-# Main Logo shown in header (svginline, file.ext, path/file.ext)
-logo = "svginline"
+# Default 'Feature' image
+default = "image/page-default.webp"
 ```
 
 Further detail on some of the options in the Images section:
 
 `default`: Choose a default image that represents the overall theme of the brand or website. This will be used for Structured Data and Open-Graph for Pages/Posts without a Feature image. It should be size to match the settings entered for `width` and `height`.
-
-`logo`: The logo option has two formats:
-
-1. IMG tag: Entering a filename or path plus filename will create an image element (`<img>`) and source the asset entered. For example: `logo = "logo.png"` or `logo = brand/logo.svg`.
-
-1. SVG inline: Entering the keyword `svginline` will source the contents of an SVG file and inline the code between the anchor element (`<a>`). This option has advantages because it allows you to manipulate the SVG with styles, such as changing the color or adding a hover effect. Also, it reduces http requests by one.
-
-To use the `svginline` option you need to paste your SVG logo code into the snippet file located at [/exampleSite/content/logo-svg/](https://github.com/jhauraw/axiom/blob/master/exampleSite/content/logo-svg/index.html). Be careful not to remove the YAML front matter section of the file contents. You can add your own CSS to the SVG tag or use SVG fills and strokes.
 
 ## CDNs
 
@@ -305,7 +347,7 @@ Axiom is designed to be deployed using the latest technologies and best practice
 [params.cdn]
 # Asset delivery provider (values: local, cloudinary)
 provider = "local"
-# Asset types. Used for CDNs which give different URLs for each asset type (image, video, raw)
+# Default asset type (values: image, video, raw)
 type = "image"
 
 # Cloudinary CDN
@@ -319,15 +361,16 @@ image = "image/upload/"
 raw = "raw/upload/"
 video = "video/upload/"
 
-# Cloudinary asset transformation presets, primarily for images, these are applied by the theme internally
+# Cloudinary asset transformation presets
+# Applied internally by Axiom or when using Shortcodes in Content
 [params.cloudinary.presets]
-# General use, all-around
+# Image: general use, all-around
 base = "f_auto,q_auto/"
-# Used for content (body) assets on Pages, Posts, and Indexes
+# Image: content body
 page = "w_auto,dpr_auto,c_scale,f_auto,q_auto/"
-# Feature Image
+# Image: content feature
 feature = "w_auto,dpr_auto,c_scale,f_auto,q_auto/"
-# Page, Post Summary
+# Image: content summary
 summary = "w_auto,dpr_auto,c_scale,f_auto,q_auto/"
 ```
 

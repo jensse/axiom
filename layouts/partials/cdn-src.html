@@ -1,7 +1,7 @@
 {{- $provider := .Site.Params.cdn.provider | default "local" }}
 {{- $preset := index .Site.Params $provider "presets" .preset | default "" }}
 {{- $type := .type | default .Site.Params.cdn.type }}
-{{- $src := .src }}
+{{- $src := .src | default "" }}
 {{- $resource := "" }}
 
 {{/* default: params.cdn.provider = local */}}

@@ -2,7 +2,7 @@
 
 ## Local Dev
 
-To develop `content` locally, just run the normal `hugo` command. A `package.json` file is provided which has three `npm scripts` pre-configured for this purpose.
+To develop `content` locally, just run the normal `hugo` command. A `package.json` file is also provided which has three pre-configured `npm scripts` offering enhanced local development:
 
 ```shell
 # dev build and server with watch
@@ -13,4 +13,4 @@ npm run dev
 npm run prd
 ```
 
-To develop the `theme` `css` or `js` see the `README` for the theme itself. To develop the optional _custom_ `css` and/or `js` you will need to configure your own build process. Examples can be found in the theme README.
+To develop the Theme's internal `css` or `js`, see the `npm scripts` in the root `package.json` file.
