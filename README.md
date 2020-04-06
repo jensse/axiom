@@ -225,16 +225,16 @@ Options for third party services, such as analytics, tracking, ads, and APIs:
 analyticsId = "UA-DEV"
 # Google Adwords Id, provided when you setup a Conversion
 adwordsId = "AW-DEV"
+# Google Adwords Conversion Id
+adwordsConversionId = "ID-DEV"
+# Google Adwords Conversion value (integer, no quotes, 00.00)
+adwordsConversionValue = 0
 # Google Adsense Id
 adsenseId = "CA-PUB-DEV"
 # Google Adsense Ad Slot Id, for ad unit shown below Posts
 adsenseAdSlotId = "ID-DEV"
 # Google Adsense Lazy Load
 adsenseLazy = false
-# Google Adwords Conversion Id
-adwordsConversionId = "ID-DEV"
-# Google Adwords Conversion value (integer, no quotes, 00.00)
-adwordsConversionValue = 0
 # Facebook App Id
 facebookApp = "FB-DEV"
 # Facebook Pixel Id
@@ -245,11 +245,9 @@ disqusUser = "na"
 
 > Tip: create a `config.dev.toml` file with test values for each service to prevent false positives on trackers.
 
-## Images
+## Custom Logo
 
-> Keep in mind the __Paths__ documentation above when working with images.
-
-__Logo__: The logo in the website's Header can be shown as 1) styled text, 2) an image, or 3) an inline svg.
+The logo in the website's Header can be shown as 1) styled text, 2) an image, or 3) an inline svg.
 
 1) TEXT: Show the website's Title (`.Site.Title` param) in styled text instead of a logo:
 
@@ -267,7 +265,7 @@ inline = false
 path = "image/brand/logo.png"
 ```
 
-> Note: any file type (extension) may be used, i.e., .jpg, .gif, .svg, etc.
+Note: any file type (extension) may be used, i.e., .jpg, .gif, .svg, etc.
 
 3) INLINE SVG: Display the logo as an inline svg (`<svg>`):
 
@@ -281,19 +279,17 @@ path = "/static/image/brand/logo.svg"
 
 Advantages with this option include the ability to manipulate the SVG with styles, such as changing the color or adding a hover effect. Also, it reduces http requests by one.
 
-__Logo Sizing CSS__: Axiom uses flexible default CSS sizing on the logo, which works for square, or rectangular images. Only the `height` is set to a fixed value, while the width is `auto`, allowing the logo to scale proportionately.
-
-You can override this and set your own logo CSS by using the Custom CSS feature of Axiom (`/assets/custom.css`, see "Extending" below). For example, to make the logo larger, you only need to increase the height:
+__Sizing and CSS__: Axiom uses flexible default CSS sizing on the logo, which works for square, or rectangular images. The `height` is set to a fixed value, and the width is set to `auto`, allowing the logo to scale proportionately. You can override these settings and set your own CSS by using the _Custom CSS_ feature (`/assets/custom.css`, see "Extending" below). For example, to make the logo larger, you only need to increase the height:
 
 ```css
 .logo img, .logo svg {
-    height: 3rem;
+    height: 3.15rem;
 }
 ```
 
-Of course, you can add any styles you like such as color or shadow.
+Of course, you can add additional styles such as color or shadow.
 
-__Image__: General image options:
+## Image
 
 ```toml
 [params.image]
@@ -311,9 +307,9 @@ icon2To1 = "image/brand/icon-2-1.png"
 default = "image/page-default.webp"
 ```
 
-> The Default image (`default`) will be used for Structured Data and Open-Graph when Pages/Posts don't have a Feature image set in the Frontmatter. It should be sized to match the settings entered for `width` and `height`. Choose an image that represents the overall theme of the brand or website.
+The Default image (`default`) will be used for Structured Data and Open-Graph when Pages/Posts don't have a Feature image set in the Frontmatter. It should be sized to match the settings entered for `width` and `height`. Choose an image that represents the overall theme of the brand or website.
 
-## Fonts
+## Font
 
 The Font section controls if the  _Type CSS_ (`/assets/type.css`) stylesheet is used, and if font files are preloaded:
 
@@ -351,7 +347,7 @@ See the _Typography_ section below for more details.
 
 ## CDNs
 
-Axiom is designed to be deployed using the latest technologies and best practices. Today that is synonymous with JAMStack, serverless edge deployment, and CDN asset delivery. However, Axiom also supports traditional web server setups with NGINX or Apache. In regards to asset delivery, Axiom supports CDNs or local file storage:
+Configure asset file delivery via local storage, or a CDN provider:
 
 ```toml
 [params.cdn]
@@ -384,9 +380,9 @@ feature = "w_auto,dpr_auto,c_scale,f_auto,q_auto/"
 summary = "w_auto,dpr_auto,c_scale,f_auto,q_auto/"
 ```
 
-When `provider` is set to one of the supported CDN values, all paths will be output as absolute URLs. The URL structure will be assembled based on each CDN's design. See the `/axiom/layouts/partials/cdn-src.html` file for details.
+When `provider` is set to one of the supported CDN values, all asset paths will be output as absolute URLs. The URL structure will be assembled based on each CDN's design. See the `/axiom/layouts/partials/cdn-src.html` file for details.
 
-> Alert: All config paths/URLs must end with a trailing slash `/`!
+> Alert: CDN Config paths/URLs must end with a trailing slash `/`!
 
 ## Menus
 
@@ -418,11 +414,9 @@ Refer to the Hugo Multilingual Documentation to learn how to add additional lang
 
 # Theme Features
 
-## Content Delivery
+## Flexible Asset Delivery
 
-Out-of-the-box, Axiom is configured to support assets (images, pdfs, fonts, etc.) which are self-hosted or hosted on a content delivery network. Currently, Cloudinary is the only CDN implemented. Axiom is also designed to be deployed via CDN to the edge as a JamStack website, for example on Netlify.
-
-If you've configured Axiom to use a CDN in the _Config_ options above, assets will be served via the CDN.
+Out-of-the-box, Axiom is configured to support assets (images, pdfs, fonts, etc.) which are self-hosted or served via a CDN. Currently, Cloudinary is the only CDN implemented.
 
 ## Frontmatter
 
@@ -485,7 +479,7 @@ SEO potential, write something relevant.
 
 ## Shortcodes
 
-> Note: Shortcodes are CDN aware. Depending on the `params.cdn.provider` setting, URLs will be output as relative, absolute, or CDN.
+> Note: Shortcodes are CDN aware.
 
 __Site Title__: Outputs the website's Config `title` value. Hugo doesn't give access to these values in Content files.
 
@@ -493,7 +487,7 @@ __Site Title__: Outputs the website's Config `title` value. Hugo doesn't give ac
 {{< site-title >}}
 ```
 
-__CDN URL__: Output a CDN aware URL for the specified asset. Useful when linking to an asset directly such as for download. Only the `src` parameter is required.
+__CDN URL__: Output a CDN aware URL for the specified asset. Useful when linking to an asset directly, such as for download. Only the `src` parameter is required.
 
 ```markup
 {{< cdn-url src="image.svg" >}}
@@ -626,11 +620,11 @@ __Facebook__: If you set a Facebook Pixel Id in the _Services_ Config (`params.s
 
 ## Extending
 
-__Custom CSS / JS__: Axiom is setup so you can add your own custom CSS and JS code to extend the theme base css / js files. To take advantage of this feature, add a file named `custom.css` and/or `custom.js` to the  _Assets_ directory (`/assets/`). Axiom will bundle the custom files with the base theme files, minify the custom code, and preload the bundles to enhance performance.
+__Custom CSS, JS__: Axiom is setup so you can add your own custom CSS and JS code to extend the theme base files. To take advantage of this feature, add a file named `custom.css` and/or `custom.js` to the  _Assets_ directory (`/assets/`). Axiom will bundle the custom files with the base, minify, and preload the bundle to enhance performance.
 
-The Example site Assets directory contains a pair of empty custom CSS and JS files to get you started.
+The _Example_ site _Assets_ directory contains a pair of empty custom CSS and JS files to get you started.
 
-If you're not using the Custom CSS and JS features, you can delete the corresponding files (`/assets/custom.css` and `/assets/custom.js`).
+If you're not using the _Custom CSS, JS_ feature, you can delete the corresponding files (`/assets/custom.css` and `/assets/custom.js`).
 
 # Misc.
 
