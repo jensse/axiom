@@ -245,6 +245,74 @@ disqusUser = "na"
 
 > Tip: create a `config.dev.toml` file with test values for each service to prevent false positives on trackers.
 
+## Images
+
+> Keep in mind the __Paths__ documentation above when working with images.
+
+__Logo__: The logo in the website's Header can be shown as 1) styled text, 2) an image, or 3) an inline svg.
+
+1) TEXT: Show the website's Title (`.Site.Title` param) in styled text instead of a logo:
+
+```toml
+[params.logo]
+inline = false
+path = ""
+```
+
+2) IMAGE: Display the logo as an image (`<img>`):
+
+```toml
+[params.logo]
+inline = false
+path = "image/brand/logo.png"
+```
+
+> Note: any file type (extension) may be used, i.e., .jpg, .gif, .svg, etc.
+
+3) INLINE SVG: Display the logo as an inline svg (`<svg>`):
+
+> Note: Axiom uses Hugo's `readFile` function to get the contents of the SVG as a string. To make this work, enter a project `root-relative` path, typically to the `/static/` or `/assets/` directory. A CDN URL cannot be used with `readFile`.
+
+```toml
+[params.logo]
+inline = true
+path = "/static/image/brand/logo.svg"
+```
+
+Advantages with this option include the ability to manipulate the SVG with styles, such as changing the color or adding a hover effect. Also, it reduces http requests by one.
+
+__Logo Sizing CSS__: Axiom uses flexible default CSS sizing on the logo, which works for square, or rectangular images. Only the `height` is set to a fixed value, while the width is `auto`, allowing the logo to scale proportionately.
+
+You can override this and set your own logo CSS by using the Custom CSS feature of Axiom (`/assets/custom.css`, see "Extending" below). For example, to make the logo larger, you only need to increase the height:
+
+```css
+.logo img, .logo svg {
+    height: 3rem;
+}
+```
+
+Of course, you can add any styles you like such as color or shadow.
+
+__Image__: General image options:
+
+```toml
+[params.image]
+# Dimensions of the 'Feature' image (pixels)
+width = "2048"
+height = "1024"
+# Favicons (suggest to store .ico at root of website or CDN)
+faviconIco = "favicon.ico"
+faviconAlt = "image/brand/favicon.png"
+# High-res square version of your Icon or Logo (recommended 2048x2048 px)
+icon1To1 = "image/brand/icon-1-1.png"
+# High-res rectangular version of your Icon or Logo (recommended 2048x1024 px)
+icon2To1 = "image/brand/icon-2-1.png"
+# Default 'Feature' image
+default = "image/page-default.webp"
+```
+
+> The Default image (`default`) will be used for Structured Data and Open-Graph when Pages/Posts don't have a Feature image set in the Frontmatter. It should be sized to match the settings entered for `width` and `height`. Choose an image that represents the overall theme of the brand or website.
+
 ## Fonts
 
 The Font section controls if the  _Type CSS_ (`/assets/type.css`) stylesheet is used, and if font files are preloaded:
@@ -280,64 +348,6 @@ If the `files` array is empty, Axiom will use the Tailwind CSS font-family fallb
 If you're not using the Type CSS features, you can delete the corresponding files in the _Assets_ directory (`/assets/type.css` and `/assets/EXAMPLE-TYPE.css`) to prevent Hugo from copying empty files on build.
 
 See the _Typography_ section below for more details.
-
-## Images
-
-> Keep in mind the __Paths__ documentation above when working with paths.
-
-__Logo__: The logo in the website's Header can be shown as 1) styled text, 2) an image, or 3) an inline svg.
-
-1) TEXT: Show the website's Title (`.Site.Title` param) in styled text instead of a logo:
-
-```toml
-[params.logo]
-inline = false
-path = ""
-```
-
-2) IMAGE: Display the logo as an image (`<img>`):
-
-```toml
-[params.logo]
-inline = false
-path = "image/brand/logo.png"
-```
-
-> Note: any file type (extension) may be used, i.e., .jpg, .gif, .svg, etc.
-
-3) INLINE SVG: Display the logo as an inline svg (`<svg>`):
-
-> Note: Axiom uses Hugo's `readFile` function to get the contents of the SVG as a string. To make this work, enter a project `root-relative` path, typically to the `/static/` or `/assets/` directory. A CDN URL cannot be used with `readFile`.
-
-```toml
-[params.logo]
-inline = true
-path = "/static/image/brand/logo.svg"
-```
-
-Advantages with this option include the ability to manipulate the SVG with styles, such as changing the color or adding a hover effect. Also, it reduces http requests by one.
-
-General image config options:
-
-```toml
-[params.image]
-# Dimensions of the 'Feature' image (pixels)
-width = "2048"
-height = "1024"
-# Favicons (suggest to store .ico at root of website or CDN)
-faviconIco = "favicon.ico"
-faviconAlt = "image/brand/favicon.png"
-# High-res square version of your Icon or Logo (recommended 2048x2048 px)
-icon1To1 = "image/brand/icon-1-1.png"
-# High-res rectangular version of your Icon or Logo (recommended 2048x1024 px)
-icon2To1 = "image/brand/icon-2-1.png"
-# Default 'Feature' image
-default = "image/page-default.webp"
-```
-
-Further detail on some of the options in the Images section:
-
-`default`: Choose a default image that represents the overall theme of the brand or website. This will be used for Structured Data and Open-Graph for Pages/Posts without a Feature image. It should be size to match the settings entered for `width` and `height`.
 
 ## CDNs
 
@@ -407,6 +417,7 @@ languageName = "US English"
 Refer to the Hugo Multilingual Documentation to learn how to add additional language support.
 
 # Theme Features
+
 ## Content Delivery
 
 Out-of-the-box, Axiom is configured to support assets (images, pdfs, fonts, etc.) which are self-hosted or hosted on a content delivery network. Currently, Cloudinary is the only CDN implemented. Axiom is also designed to be deployed via CDN to the edge as a JamStack website, for example on Netlify.
@@ -474,13 +485,42 @@ SEO potential, write something relevant.
 
 ## Shortcodes
 
-__Figure__: Axiom comes with a custom Figure image shortcode which uses the same API as the built in Hugo shortcode, but has been enhanced to support CDN images and transformations. You only need to pass it the image name (e.g., `path/filename.ext`, `public_id` [uuid]) with or without extension and Axiom will do the rest - no need to copy/paste complicated URLs in your Markdown files.
+> Note: Shortcodes are CDN aware. Depending on the `params.cdn.provider` setting, URLs will be output as relative, absolute, or CDN.
+
+__Site Title__: Outputs the website's Config `title` value. Hugo doesn't give access to these values in Content files.
+
+```markup
+{{< site-title >}}
+```
+
+__CDN URL__: Output a CDN aware URL for the specified asset. Useful when linking to an asset directly such as for download. Only the `src` parameter is required.
+
+```markup
+{{< cdn-url src="image.svg" >}}
+{{< cdn-url src="image.jpg" preset="page" >}}
+{{< cdn-url src="video.mp4" type="video" >}}
+{{< cdn-url src="font.woff" type="raw" >}}
+```
+
+__PDF Download__: A small float-right PDF download widget.
+
+```markup
+{{< pdf-download "pdf/Document.pdf" >}}
+```
+
+__Email SVG__: An email SVG icon. Shown with Hugo's built-in param shortcode. This example could be used on a Contact page.
+
+```markup
+{{< email-svg >}} {{< param "brand.email" >}}
+```
+
+__Figure__: Axiom comes with a custom Figure image shortcode which uses the same API as the built in Hugo shortcode, but has been enhanced to support CDN images and the `page` preset is applied. You only need to pass it the image name (e.g., `path/filename.ext`, `public_id` [uuid]) with or without extension and Axiom will do the rest - no need to copy/paste complicated URLs in your Markdown files.
+
+Only the `src` parameter is required. See the Hugo Figure Shortcode Documentation for all of the options.
 
 ```markup
 {{< figure src="image/data-chart.webp" alt="Data Chart" caption="Data Chart" attr="Big Data" attrlink="https://www.example.com/" >}}
 ```
-
-See the Hugo Figure Shortcode Documentation for all of the options.
 
 __Blockquote__: The first parameter is required, while the other two are optional:
 
